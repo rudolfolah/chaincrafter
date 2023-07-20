@@ -1,6 +1,6 @@
 # chaincrafter - Python
 
-## Install
+## Local Development
 
 ```bash
 python -m venv ./venv
