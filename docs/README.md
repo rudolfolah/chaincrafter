@@ -8,7 +8,13 @@ source ./venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Build
+## Build and Serve Locally
+
+```bash
+cd docs/
+mkdocs build # static build
+mkdocs serve # live-reloading server
+```
 
 ## Deploying
 
@@ -16,3 +22,8 @@ pip install -r requirements.txt
 * [Deploying to Read The Docs](https://www.mkdocs.org/user-guide/deploying-your-docs/#read-the-docs)
 
 GitHub Pages deploy will create the `gh-pages` branch and push the documentation there
+
+```bash
+cd docs/
+mkdocs gh-deploy
+```
