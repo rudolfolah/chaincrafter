@@ -24,11 +24,44 @@
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand" href=".">chaincrafter</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
                 <!-- Expanded navigation -->
                 <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem active">
+                                <a href="." class="nav-link">Home</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Integrations <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="integrations/llamacpp/" class="dropdown-item">llama.cpp</a>
+</li>
+                                    
+<li>
+    <a href="integrations/openai/" class="dropdown-item">OpenAI: GPT-3.5, GPT-4</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
 
                     <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="integrations/llamacpp/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -47,13 +80,31 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#chaincrafter" class="nav-link">chaincrafter</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#python" class="nav-link">Python</a>
+            <li class="nav-item" data-level="2"><a href="#features" class="nav-link">Features</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#javascript-typescript" class="nav-link">JavaScript / TypeScript</a>
+            
+            <li class="nav-item" data-level="1"><a href="#python" class="nav-link">Python</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#installation" class="nav-link">Installation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#usage" class="nav-link">Usage</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#javascript-typescript" class="nav-link">JavaScript / TypeScript</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#installation_1" class="nav-link">Installation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#usage_1" class="nav-link">Usage</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -64,20 +115,66 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="chaincrafter">chaincrafter</h1>
 <!-- BEGIN INCLUDE ../../../README.md '&lt;!--docs-index-start--&gt;' '&lt;!--docs-index-end--&gt;' -->
 
-<p>Seamless integration and composability for large language model apps</p>
-<h2 id="python">Python</h2>
-<h3 id="installation">Installation</h3>
+<p>Seamless integration and composability for large language model apps.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Composable prompts and chains<ul>
+<li>Use multiple models to run one chain and then use that as input for a different chain and model</li>
+</ul>
+</li>
+<li>Customizable prompt and response formatting<ul>
+<li>Add modifiers to prompts to change the style, length, and format of the response</li>
+<li>Extract data from the response to use in the next prompt</li>
+<li>Add custom functions to process the response</li>
+<li>Add custom functions to process the input variables</li>
+</ul>
+</li>
+<li>Integration with OpenAI API (llama.cpp in progress)</li>
+</ul>
+<h1 id="python">Python</h1>
+<h2 id="installation">Installation</h2>
 <pre><code class="language-bash">pip install chaincrafter
 </code></pre>
-<h3 id="usage">Usage</h3>
-<h2 id="javascript-typescript">JavaScript / TypeScript</h2>
-<h3 id="installation_1">Installation</h3>
+<h2 id="usage">Usage</h2>
+<ol>
+<li>Define your prompts and the variables that they expect</li>
+<li>The input variables can be of any type, and can be processed by a function</li>
+<li>The prompt message is treated as an <em>f-string</em></li>
+<li>Define your chain of prompts</li>
+<li>The chain is a list of tuples, where each tuple contains a prompt and the output key to store the response in</li>
+<li>The output key is used to access the response in the next prompt</li>
+<li>Set up the models that you want to use</li>
+<li>Run the chain using the models</li>
+</ol>
+<pre><code class="language-python">from chaincrafter import Chain, Prompt
+from chaincrafter.models import OpenAiChat
+
+chat_model = OpenAiChat(temperature=0.65, model_name=&quot;gpt-3.5-turbo&quot;)
+system_prompt = Prompt(&quot;You are a helpful assistant who responds to questions about the world&quot;)
+hello_prompt = Prompt(&quot;Hello, what is the capital of France? Answer only with the city name.&quot;)
+followup_prompt = Prompt(&quot;{city} sounds like a nice place to visit. What is the population of {city}?&quot;)
+chain = Chain(
+    system_prompt,
+    (hello_prompt, &quot;city&quot;),
+    (followup_prompt, &quot;followup_response&quot;),
+)
+messages = chain.run(chat_model)
+for message in messages:
+    print(f&quot;{message['role']}: {message['content']}&quot;)
+</code></pre>
+<h3 id="running-the-examples">Running the examples</h3>
+<pre><code class="language-bash">source venv/bin/activate
+export OPENAI_API_KEY=&quot;...&quot;
+python -m examples.interesting_facts
+</code></pre>
+<h1 id="javascript-typescript">JavaScript / TypeScript</h1>
+<p><strong>Work in progress</strong></p>
+<h2 id="installation_1">Installation</h2>
 <pre><code class="language-bash">npm install chaincrafter
 </code></pre>
-<h3 id="usage_1">Usage</h3>
+<h2 id="usage_1">Usage</h2>
 <!-- END INCLUDE --></div>
             </div>
         </div>
@@ -138,5 +235,5 @@
 
 <!--
 MkDocs version : 1.4.3
-Build Date UTC : 2023-07-20 15:04:05.179025+00:00
+Build Date UTC : 2023-07-22 18:04:07.408525+00:00
 -->
