@@ -82,7 +82,19 @@ class OpenAiChat(ChatModel):
 
     Requires that the OPENAI_API_KEY environment variable is set.
     """
-    def __init__(self, temperature, model_name):
+    def __init__(
+            self,
+            temperature: float,
+            model_name: str,
+            top_p: float = 1.0,
+            n: int = 1,
+            stream: bool = False,
+            stop: [str] = None,
+            max_tokens: int = None,
+            presence_penalty: float = 0.0,
+            frequency_penalty: float = 0.0,
+            logit_bias: dict = None,
+    ):
         super().__init__(temperature, model_name)
         import openai
         openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -91,6 +103,14 @@ class OpenAiChat(ChatModel):
             sys.exit(1)
         self._temperature = temperature
         self._model_name = model_name
+        self._top_p = top_p
+        self._n = n
+        self._stream = stream
+        self._stop = stop
+        self._max_tokens = max_tokens
+        self._presence_penalty = presence_penalty
+        self._frequency_penalty = frequency_penalty
+        self._logit_bias = logit_bias
         logging.info(f"Using OpenAI model {self._model_name}, temperature {self._temperature}")
         self.usage = {
             "prompt_tokens": 0,
@@ -107,11 +127,23 @@ class OpenAiChat(ChatModel):
         """
         import openai
         logging.debug("Calling OpenAI API")
-        completion = openai.ChatCompletion.create(
-            model=self._model_name,
-            temperature=self._temperature,
-            messages=messages,
-        )
+        kwargs = {
+            "model": self._model_name,
+            "temperature": self._temperature,
+            "messages": messages,
+            "top_p": self._top_p,
+            "n": self._n,
+            "stream": self._stream,
+            "presence_penalty": self._presence_penalty,
+            "frequency_penalty": self._frequency_penalty,
+        }
+        if self._stop:
+            kwargs["stop"] = self._stop
+        if self._max_tokens:
+            kwargs["max_tokens"] = self._max_tokens
+        if self._logit_bias:
+            kwargs["logit_bias"] = self._logit_bias
+        completion = openai.ChatCompletion.create(**kwargs)
         logging.debug("OpenAI API call complete")
         self.usage["prompt_tokens"] += completion.usage["prompt_tokens"]
         self.usage["completion_tokens"] += completion.usage["completion_tokens"]
