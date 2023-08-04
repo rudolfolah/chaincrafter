@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Experiments - chaincrafter</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">chaincrafter</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Experiments</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Integrations <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../integrations/llamacpp/" class="dropdown-item">llama.cpp</a>
+</li>
+                                    
+<li>
+    <a href="../integrations/openai/" class="dropdown-item">OpenAI: GPT-3.5, GPT-4</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../integrations/llamacpp/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#experiment" class="nav-link">Experiment</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#openai-chat-experiment" class="nav-link">OpenAI Chat Experiment</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#example" class="nav-link">Example</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p>Experiments are a way to run a set of prompt chains with a variety of model parameters and compare the results. This is useful for finding the best model parameters for a given prompt chain. It is also useful to store and compare the results at later points in time.</p>
+<h1 id="experiment">Experiment</h1>
+<p>An experiment that runs a chat model on a prompt. Generates all permutations of the variables provided.</p>
+<ul>
+<li><code>Experiment(message, **model_params)</code>: Create an experiment with the given prompts chain and the model parameters</li>
+<li><code>Experiment.run(runs=1)</code>: Run the experiment</li>
+<li><code>Experiment.model_class</code>: The model class used in the experiment</li>
+<li><code>Experiment.results</code>: The results of the experiment</li>
+<li><code>Experiment.prepare()</code>: Prepare the experiment by generating the Cartesian product of the model parameters</li>
+<li><code>Experiment.to_csv()</code>: Returns the results as a CSV string</li>
+<li><code>Experiment.to_json()</code>: Returns the results as a JSON string</li>
+<li><code>Experiment.to_pandas_df()</code>: Returns the results as a Pandas DataFrame</li>
+<li><code>Experiment.visualize()</code>: Returns the results as a Pandas DataFrame</li>
+</ul>
+<h1 id="openai-chat-experiment">OpenAI Chat Experiment</h1>
+<p>You can set up an experiment with the model parameters for OpenAI Chat like this:</p>
+<pre><code class="language-python">from chaincrafter.experiments import OpenAiChatExperiment
+# ...
+experiment = OpenAiChatExperiment(
+    chain,
+    model_name=[&quot;gpt-4&quot;, &quot;gpt-3.5-turbo&quot;],
+    temperature=[0.7, 1.5],
+    presence_penalty=[0.1],
+    frequency_penalty=[0.2],
+    max_tokens=[100, 300, None],
+)
+</code></pre>
+<p>All of the parameters will be set to defaults if you don't specify them. Specify one value by using a list with one item (e.g. <code>model_name=["gpt-4"]</code>).</p>
+<h2 id="example">Example</h2>
+<h3 id="code">Code</h3>
+<pre><code class="language-python">from chaincrafter import Chain, Prompt
+from chaincrafter.experiments import OpenAiChatExperiment
+
+system_prompt = Prompt(&quot;You are a helpful assistant who responds to questions about the world&quot;)
+hello_prompt = Prompt(&quot;Hello, what is the capital of France? Answer only with the city name.&quot;)
+followup_prompt = Prompt(&quot;{city} sounds like a nice place to visit. What is the population of {city}?&quot;)
+chain = Chain(
+    system_prompt,
+    (hello_prompt, &quot;city&quot;),
+    (followup_prompt, &quot;followup_response&quot;),
+)
+experiment = OpenAiChatExperiment(
+    chain,
+    model_name=[&quot;gpt-4&quot;, &quot;gpt-3.5-turbo&quot;],
+    temperature=[0.7, 1.5],
+    presence_penalty=[0.1],
+    frequency_penalty=[0.2],
+)
+experiment.run()
+print(experiment.results)
+# CSV Output
+print(experiment.to_csv())
+# JSON Output
+print(experiment.to_json())
+# Pandas DataFrame Output
+print(experiment.to_pandas_df())
+# Pandas DataFrame Visualize
+print(experiment.visualize())
+</code></pre>
+<h3 id="output">Output</h3>
+<pre><code>Run 0 at 2023-08-04 09:42:17 with model parameters: {'model_name': 'gpt-4', 'temperature': 0.7, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}
+system: You are a helpful assistant who responds to questions about the world
+user: Hello, what is the capital of France? Answer only with the city name.
+assistant: Paris
+user: Paris sounds like a nice place to visit. What is the population of Paris?
+assistant: As of 2021, the population of Paris is approximately 2.16 million people.
+
+Run 0 at 2023-08-04 09:42:24 with model parameters: {'model_name': 'gpt-4', 'temperature': 1.5, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}
+system: You are a helpful assistant who responds to questions about the world
+user: Hello, what is the capital of France? Answer only with the city name.
+assistant: Paris
+user: Paris sounds like a nice place to visit. What is the population of Paris?
+assistant: As of the latest data from 2021, the population of Paris is approximately 2.14 million people in the city proper. Note that the population of the larger Paris Metropolitan area is considerably higher.
+
+Run 0 at 2023-08-04 09:42:25 with model parameters: {'model_name': 'gpt-3.5-turbo', 'temperature': 0.7, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}
+system: You are a helpful assistant who responds to questions about the world
+user: Hello, what is the capital of France? Answer only with the city name.
+assistant: Paris
+user: Paris sounds like a nice place to visit. What is the population of Paris?
+assistant: The population of Paris is approximately 2.2 million people.
+
+Run 0 at 2023-08-04 09:42:27 with model parameters: {'model_name': 'gpt-3.5-turbo', 'temperature': 1.5, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}
+system: You are a helpful assistant who responds to questions about the world
+user: Hello, what is the capital of France? Answer only with the city name.
+assistant: Paris
+user: Paris sounds like a nice place to visit. What is the population of Paris?
+assistant: As of 2021, the estimated population of Paris is over 2.1 million residents in the city proper area.
+
+[{'run_number': 0, 'timestamp': '2023-08-04 09:42:17', 'messages': [{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'As of 2021, the population of Paris is approximately 2.16 million people.'}], 'model_name': 'gpt-4', 'temperature': 0.7, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}, {'run_number': 0, 'timestamp': '2023-08-04 09:42:24', 'messages': [{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'As of the latest data from 2021, the population of Paris is approximately 2.14 million people in the city proper. Note that the population of the larger Paris Metropolitan area is considerably higher.'}], 'model_name': 'gpt-4', 'temperature': 1.5, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}, {'run_number': 0, 'timestamp': '2023-08-04 09:42:25', 'messages': [{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'The population of Paris is approximately 2.2 million people.'}], 'model_name': 'gpt-3.5-turbo', 'temperature': 0.7, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}, {'run_number': 0, 'timestamp': '2023-08-04 09:42:27', 'messages': [{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'As of 2021, the estimated population of Paris is over 2.1 million residents in the city proper area.'}], 'model_name': 'gpt-3.5-turbo', 'temperature': 1.5, 'presence_penalty': 0.1, 'frequency_penalty': 0.2, 'top_p': 1.0, 'n': 1, 'stream': False, 'stop': None, 'max_tokens': None, 'logit_bias': None}]
+,run_number,timestamp,messages,model_name,temperature,presence_penalty,frequency_penalty,top_p,n,stream,stop,max_tokens,logit_bias
+0,0,2023-08-04 09:42:17,&quot;[{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'As of 2021, the population of Paris is approximately 2.16 million people.'}]&quot;,gpt-4,0.7,0.1,0.2,1.0,1,False,,,
+1,0,2023-08-04 09:42:24,&quot;[{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'As of the latest data from 2021, the population of Paris is approximately 2.14 million people in the city proper. Note that the population of the larger Paris Metropolitan area is considerably higher.'}]&quot;,gpt-4,1.5,0.1,0.2,1.0,1,False,,,
+2,0,2023-08-04 09:42:25,&quot;[{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'The population of Paris is approximately 2.2 million people.'}]&quot;,gpt-3.5-turbo,0.7,0.1,0.2,1.0,1,False,,,
+3,0,2023-08-04 09:42:27,&quot;[{'role': 'system', 'content': 'You are a helpful assistant who responds to questions about the world'}, {'role': 'user', 'content': 'Hello, what is the capital of France? Answer only with the city name.'}, {'role': 'assistant', 'content': 'Paris'}, {'role': 'user', 'content': 'Paris sounds like a nice place to visit. What is the population of Paris?'}, {'role': 'assistant', 'content': 'As of 2021, the estimated population of Paris is over 2.1 million residents in the city proper area.'}]&quot;,gpt-3.5-turbo,1.5,0.1,0.2,1.0,1,False,,,
+
+{&quot;run_number&quot;:{&quot;0&quot;:0,&quot;1&quot;:0,&quot;2&quot;:0,&quot;3&quot;:0},&quot;timestamp&quot;:{&quot;0&quot;:&quot;2023-08-04 09:42:17&quot;,&quot;1&quot;:&quot;2023-08-04 09:42:24&quot;,&quot;2&quot;:&quot;2023-08-04 09:42:25&quot;,&quot;3&quot;:&quot;2023-08-04 09:42:27&quot;},&quot;messages&quot;:{&quot;0&quot;:[{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a helpful assistant who responds to questions about the world&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Hello, what is the capital of France? Answer only with the city name.&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;Paris&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Paris sounds like a nice place to visit. What is the population of Paris?&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;As of 2021, the population of Paris is approximately 2.16 million people.&quot;}],&quot;1&quot;:[{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a helpful assistant who responds to questions about the world&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Hello, what is the capital of France? Answer only with the city name.&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;Paris&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Paris sounds like a nice place to visit. What is the population of Paris?&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;As of the latest data from 2021, the population of Paris is approximately 2.14 million people in the city proper. Note that the population of the larger Paris Metropolitan area is considerably higher.&quot;}],&quot;2&quot;:[{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a helpful assistant who responds to questions about the world&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Hello, what is the capital of France? Answer only with the city name.&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;Paris&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Paris sounds like a nice place to visit. What is the population of Paris?&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;The population of Paris is approximately 2.2 million people.&quot;}],&quot;3&quot;:[{&quot;role&quot;:&quot;system&quot;,&quot;content&quot;:&quot;You are a helpful assistant who responds to questions about the world&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Hello, what is the capital of France? Answer only with the city name.&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;Paris&quot;},{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;Paris sounds like a nice place to visit. What is the population of Paris?&quot;},{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:&quot;As of 2021, the estimated population of Paris is over 2.1 million residents in the city proper area.&quot;}]},&quot;model_name&quot;:{&quot;0&quot;:&quot;gpt-4&quot;,&quot;1&quot;:&quot;gpt-4&quot;,&quot;2&quot;:&quot;gpt-3.5-turbo&quot;,&quot;3&quot;:&quot;gpt-3.5-turbo&quot;},&quot;temperature&quot;:{&quot;0&quot;:0.7,&quot;1&quot;:1.5,&quot;2&quot;:0.7,&quot;3&quot;:1.5},&quot;presence_penalty&quot;:{&quot;0&quot;:0.1,&quot;1&quot;:0.1,&quot;2&quot;:0.1,&quot;3&quot;:0.1},&quot;frequency_penalty&quot;:{&quot;0&quot;:0.2,&quot;1&quot;:0.2,&quot;2&quot;:0.2,&quot;3&quot;:0.2},&quot;top_p&quot;:{&quot;0&quot;:1.0,&quot;1&quot;:1.0,&quot;2&quot;:1.0,&quot;3&quot;:1.0},&quot;n&quot;:{&quot;0&quot;:1,&quot;1&quot;:1,&quot;2&quot;:1,&quot;3&quot;:1},&quot;stream&quot;:{&quot;0&quot;:false,&quot;1&quot;:false,&quot;2&quot;:false,&quot;3&quot;:false},&quot;stop&quot;:{&quot;0&quot;:null,&quot;1&quot;:null,&quot;2&quot;:null,&quot;3&quot;:null},&quot;max_tokens&quot;:{&quot;0&quot;:null,&quot;1&quot;:null,&quot;2&quot;:null,&quot;3&quot;:null},&quot;logit_bias&quot;:{&quot;0&quot;:null,&quot;1&quot;:null,&quot;2&quot;:null,&quot;3&quot;:null}}
+   run_number            timestamp                                           messages     model_name  temperature  presence_penalty  frequency_penalty  top_p  n  stream  stop max_tokens logit_bias
+0           0  2023-08-04 09:42:17  [{'role': 'system', 'content': 'You are a help...          gpt-4          0.7               0.1                0.2    1.0  1   False  None       None       None
+1           0  2023-08-04 09:42:24  [{'role': 'system', 'content': 'You are a help...          gpt-4          1.5               0.1                0.2    1.0  1   False  None       None       None
+2           0  2023-08-04 09:42:25  [{'role': 'system', 'content': 'You are a help...  gpt-3.5-turbo          0.7               0.1                0.2    1.0  1   False  None       None       None
+3           0  2023-08-04 09:42:27  [{'role': 'system', 'content': 'You are a help...  gpt-3.5-turbo          1.5               0.1                0.2    1.0  1   False  None       None       None
+   run_number            timestamp                                           messages     model_name  temperature  presence_penalty  frequency_penalty  top_p  n  stream  stop max_tokens logit_bias
+0           0  2023-08-04 09:42:17  [{'role': 'system', 'content': 'You are a help...          gpt-4          0.7               0.1                0.2    1.0  1   False  None       None       None
+1           0  2023-08-04 09:42:24  [{'role': 'system', 'content': 'You are a help...          gpt-4          1.5               0.1                0.2    1.0  1   False  None       None       None
+2           0  2023-08-04 09:42:25  [{'role': 'system', 'content': 'You are a help...  gpt-3.5-turbo          0.7               0.1                0.2    1.0  1   False  None       None       None
+3           0  2023-08-04 09:42:27  [{'role': 'system', 'content': 'You are a help...  gpt-3.5-turbo          1.5               0.1                0.2    1.0  1   False  None       None       None
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
