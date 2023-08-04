@@ -18,3 +18,11 @@ experiment = OpenAiChatExperiment(
 )
 experiment.run()
 print(experiment.results)
+# CSV Output
+print(experiment.to_csv())
+# JSON Output
+print(experiment.to_json())
+# Pandas DataFrame Output
+print(experiment.to_pandas_df())
+# Pandas DataFrame Visualize
+print(experiment.visualize())

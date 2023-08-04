@@ -2,6 +2,8 @@
 from datetime import datetime
 from itertools import product
 
+import pandas as pd
+
 from chaincrafter.chains import Chain
 from chaincrafter.models import OpenAiChat
 
@@ -59,6 +61,18 @@ class Experiment:
                 for message in messages:
                     print(f"{message['role']}: {message['content']}")
                 print()
+
+    def to_csv(self):
+        return pd.DataFrame(self.results).to_csv()
+
+    def to_pandas_df(self):
+        return pd.DataFrame(self.results)
+
+    def to_json(self):
+        return pd.DataFrame(self.results).to_json()
+
+    def visualize(self):
+        return pd.DataFrame(self.results)
 
 
 class OpenAiChatExperiment(Experiment):
