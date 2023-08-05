@@ -1,4 +1,9 @@
 site_name: chaincrafter
+nav:
+  - Home: index.md
+  - integrations.md
+  - experiments.md
+  - async.md
 plugins:
   - mermaid2
   - include-markdown
