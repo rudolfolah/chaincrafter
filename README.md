@@ -1,6 +1,5 @@
 # chaincrafter
 
-<!--docs-index-start-->
 Seamless integration and composability for large language model apps.
 
 ## Features
@@ -14,6 +13,7 @@ Seamless integration and composability for large language model apps.
 * Integration with OpenAI API (llama.cpp in progress)
 * Async calls to models
 
+<!--docs-index-start-->
 # Python
 
 ## Installation
