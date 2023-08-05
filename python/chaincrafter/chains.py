@@ -1,3 +1,4 @@
+import asyncio
 from collections import deque
 from typing import TypedDict
 
@@ -40,3 +41,6 @@ class Chain:
             input_vars = {output_key: response}
             messages.append({"role": "assistant", "content": response})
         return messages
+
+    async def async_run(self, chat_model: ChatModel, starting_input_vars: dict = {}) -> [Message]:
+        return await asyncio.to_thread(self.run, chat_model, starting_input_vars)

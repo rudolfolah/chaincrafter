@@ -12,6 +12,7 @@ Seamless integration and composability for large language model apps.
     * Add custom functions to process the response
     * Add custom functions to process the input variables
 * Integration with OpenAI API (llama.cpp in progress)
+* Async calls to models
 
 # Python
 
