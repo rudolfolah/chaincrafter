@@ -24,7 +24,11 @@ class Experiment:
         self.results = []
         self.starting_input_vars = {}
 
-    def set_chain_starting_input_vars(self, starting_input_vars):
+    def set_chain_starting_input_vars(self, starting_input_vars: dict) -> None:
+        """
+        Sets the starting input variables for the chain.
+        :param starting_input_vars:
+        """
         self.starting_input_vars = copy.deepcopy(starting_input_vars)
 
     def _set_model_params(self, default_params: dict) -> None:
@@ -57,7 +61,7 @@ class Experiment:
                 messages = self.chain.run(model, self.starting_input_vars)
                 result = {
                     "run_number": run_number,
-                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "timestamp": datetime.now().isoformat(),
                     "messages": messages,
                 }
                 result.update(model_params)
