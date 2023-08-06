@@ -21,31 +21,39 @@ review_chain = Chain(
     (review_prompts[1], "feedback2"),
 )
 
-description_prompt = Prompt("Can you please describe the code changes at a high level, I want to use it for the pull request description.\n```{diff}\n```", diff=str)
+description_prompt = Prompt(
+    "Can you please describe the code changes at a high level, I want to use it for the {description_type} description.\n```{diff}\n```",
+    diff=str,
+    description_type=str,
+)
 description_chain = Chain(
-    Prompt("You are a helpful software engineer who is reviewing code and helping me write a pull request description."),
+    Prompt(
+        "You are a helpful software engineer who is reviewing code and helping me write a {description_type} description.",
+        description_type=str,
+    ),
     (description_prompt, "description"),
 )
 
 
 async def main():
     process = await asyncio.create_subprocess_shell(
-        "git diff HEAD~2 HEAD~1", stdout=asyncio.subprocess.PIPE
+        "git diff HEAD~3 HEAD~2 chaincrafter", stdout=asyncio.subprocess.PIPE
     )
     stdout, stderr = await process.communicate()
     # convert bytes to string
     diff = stdout.decode().strip()
-    starting_input_vars= {"diff": diff}
     print(diff)
+    sections = ['Review', 'PR Description', 'Git Commit Description']
     results = await asyncio.gather(
-        review_chain.async_run(chat_model, starting_input_vars),
-        description_chain.async_run(chat_model, starting_input_vars),
+        review_chain.async_run(chat_model, {"diff": diff}),
+        description_chain.async_run(chat_model, {"diff": diff, "description_type": "pull request"}),
+        description_chain.async_run(chat_model, {"diff": diff, "description_type": "git commit"}),
     )
-    for messages in results:
+    for section, messages in zip(sections, results):
+        print(f"\n\n### {section} ###\n")
         for message in messages:
             if message['role'] != 'assistant':
                 continue
             print(message['content'])
-        print("\n\n")
 
 asyncio.run(main())
