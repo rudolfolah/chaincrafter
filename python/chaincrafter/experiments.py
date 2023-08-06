@@ -15,8 +15,8 @@ class Experiment:
 
     model_class = None
 
-    def __init__(self, messages: Chain, **model_params):
-        self.messages = messages
+    def __init__(self, chain: Chain, **model_params):
+        self.chain = chain
         self.model_params = model_params
         self._model_params_product = None
         self._prepared = False
@@ -49,7 +49,7 @@ class Experiment:
             for model_params_values in self._model_params_product:
                 model_params = dict(zip(self.model_params.keys(), model_params_values))
                 model = self.model_class(**model_params)
-                messages = self.messages.run(model)
+                messages = self.chain.run(model)
                 result = {
                     "run_number": run_number,
                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -78,8 +78,8 @@ class Experiment:
 class OpenAiChatExperiment(Experiment):
     model_class = OpenAiChat
 
-    def __init__(self, messages, **model_params):
-        super().__init__(messages, **model_params)
+    def __init__(self, chain, **model_params):
+        super().__init__(chain, **model_params)
         self._set_model_params({
             "temperature": [1.0],
             "top_p": [1.0],

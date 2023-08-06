@@ -4,9 +4,9 @@ Experiments are a way to run a set of prompt chains with a variety of model para
 
 An experiment that runs a chat model on a prompt. Generates all permutations of the variables provided.
 
-* `Experiment(message, **model_params)`: Create an experiment with the given prompts chain and the model parameters
+* `Experiment(chain, **model_params)`: Create an experiment with the given prompts `Chain` and the model parameters
 * `Experiment.run(runs=1)`: Run the experiment
-* `Experiment.model_class`: The model class used in the experiment
+* `Experiment.model_class`: The `ChatModel` subclass used in the experiment
 * `Experiment.results`: The results of the experiment
 * `Experiment.prepare()`: Prepare the experiment by generating the Cartesian product of the model parameters
 * `Experiment.to_csv()`: Returns the results as a CSV string
