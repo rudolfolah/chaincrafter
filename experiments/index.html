@@ -98,9 +98,9 @@
 <h1 id="experiment">Experiment</h1>
 <p>An experiment that runs a chat model on a prompt. Generates all permutations of the variables provided.</p>
 <ul>
-<li><code>Experiment(message, **model_params)</code>: Create an experiment with the given prompts chain and the model parameters</li>
+<li><code>Experiment(chain, **model_params)</code>: Create an experiment with the given prompts <code>Chain</code> and the model parameters</li>
 <li><code>Experiment.run(runs=1)</code>: Run the experiment</li>
-<li><code>Experiment.model_class</code>: The model class used in the experiment</li>
+<li><code>Experiment.model_class</code>: The <code>ChatModel</code> subclass used in the experiment</li>
 <li><code>Experiment.results</code>: The results of the experiment</li>
 <li><code>Experiment.prepare()</code>: Prepare the experiment by generating the Cartesian product of the model parameters</li>
 <li><code>Experiment.to_csv()</code>: Returns the results as a CSV string</li>
