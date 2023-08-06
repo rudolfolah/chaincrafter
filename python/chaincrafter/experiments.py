@@ -1,4 +1,5 @@
 # Based on the API from prompttools: https://prompttools.readthedocs.io/en/latest/experiment.html
+import copy
 from datetime import datetime
 from itertools import product
 
@@ -21,6 +22,10 @@ class Experiment:
         self._model_params_product = None
         self._prepared = False
         self.results = []
+        self.starting_input_vars = {}
+
+    def set_chain_starting_input_vars(self, starting_input_vars):
+        self.starting_input_vars = copy.deepcopy(starting_input_vars)
 
     def _set_model_params(self, default_params: dict) -> None:
         """
@@ -49,7 +54,7 @@ class Experiment:
             for model_params_values in self._model_params_product:
                 model_params = dict(zip(self.model_params.keys(), model_params_values))
                 model = self.model_class(**model_params)
-                messages = self.chain.run(model)
+                messages = self.chain.run(model, self.starting_input_vars)
                 result = {
                     "run_number": run_number,
                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
