@@ -36,6 +36,7 @@ async def main():
     # convert bytes to string
     diff = stdout.decode().strip()
     starting_input_vars= {"diff": diff}
+    print(diff)
     results = await asyncio.gather(
         review_chain.async_run(chat_model, starting_input_vars),
         description_chain.async_run(chat_model, starting_input_vars),
