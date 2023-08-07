@@ -1,6 +1,6 @@
 site_name: chaincrafter
 nav:
-  - Home: index.md
+  - GitHub: 'https://github.com/rudolfolah/chaincrafter'
   - integrations.md
   - experiments.md
   - async.md
