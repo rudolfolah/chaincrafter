@@ -4,6 +4,7 @@ setup(
     name="chaincrafter",
     version="0.1.0",
     description="Seamless integration and composability for large language model apps.",
+    long_description="Seamless integration and composability for large language model apps.",
     author="Rudolf Olah",
     author_email="rudolf.olah.to@gmail.com",
     url="https://github.com/rudolfolah/chaincrafter",
