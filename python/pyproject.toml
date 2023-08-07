@@ -1,0 +1,23 @@
+[project]
+name = "chaincrafter"
+version = "0.1.0"
+authors = [
+    { name="Rudolf Olah", email="rudolf.olah.to@gmail.com" },
+]
+description = "Seamless integration and composability for large language model apps."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Other/Nonlisted Topic",
+]
+keywords = ["machine learning", "ai", "openai", "llama", "ml", "gpt-4", "gpt-3.5"]
+
+[project.urls]
+"Homepage" = "https://rudolfolah.github.io/chaincrafter/"
+"Bug Tracker" = "https://github.com/rudolfolah/chaincrafter/issues"
+"Repository" = "https://github.com/rudolfolah/chaincrafter"
