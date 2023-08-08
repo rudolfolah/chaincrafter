@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Integrations - chaincrafter</title>
+        <title>Examples - chaincrafter</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -39,8 +39,8 @@
                             <li class="navitem">
                                 <a href="https://github.com/rudolfolah/chaincrafter" class="nav-link">GitHub</a>
                             </li>
-                            <li class="navitem active">
-                                <a href="./" class="nav-link">Integrations</a>
+                            <li class="navitem">
+                                <a href="../integrations/" class="nav-link">Integrations</a>
                             </li>
                             <li class="navitem">
                                 <a href="../experiments/" class="nav-link">Experiments</a>
@@ -48,8 +48,8 @@
                             <li class="navitem">
                                 <a href="../async/" class="nav-link">Async</a>
                             </li>
-                            <li class="navitem">
-                                <a href="../examples/" class="nav-link">Examples</a>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Examples</a>
                             </li>
                             <li class="navitem">
                                 <a href="../api/" class="nav-link">API</a>
@@ -58,12 +58,12 @@
 
                     <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a rel="prev" href=".." class="nav-link">
+                                <a rel="prev" href="../async/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../experiments/" class="nav-link">
+                                <a rel="next" href="../api/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -84,33 +84,41 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#python" class="nav-link">Python</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#javascripttypescript" class="nav-link">JavaScript/TypeScript</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p>Integrations available</p>
-<table>
-<thead>
-<tr>
-<th>Integration</th>
-<th>Status, Python</th>
-<th>Status, JavaScript</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OpenAI: GPT-3.5, GPT-4</td>
-<td>Stable</td>
-<td>In development</td>
-</tr>
-<tr>
-<td>Llama.cpp</td>
-<td>In development</td>
-<td>In development</td>
-</tr>
-</tbody>
-</table></div>
+<h1 id="python">Python</h1>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/code_reviewer_async.py">Code Reviewer Async</a></em>:
+An example of using <a href="../async/">the async API</a> to run a chain of messages asynchronously. It uses a <code>git diff</code> as the material for a code review.
+The results are a code review from a software engineer, a pull request description, and a description that could be used as a git commit message.</p>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/comparing_code_models.py">Comparing Code Models</a></em>:
+This example uses a prompt with the GPT-3.5 and GPT-4 models that will generate suggestions for code improvements and then apply the suggestions to the code.</p>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/describe_topic_experiment.py">Describe Topic Experiment</a></em>:
+Uses an <a href="../experiments/">experiment</a> to compare the responses from GPT-3.5 and GPT-4 for a chain of prompts that asks</p>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/hello_world.py">Hello World</a></em>:
+Chain of two prompts; the first asks for the capital of a country, the second asks for the city's population.</p>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/hello_world_async.py">Hello World Async</a></em>:
+Same as <em>Hello World</em>, however it uses <a href="../async/">the async API</a> to run two chains asynchronously. It asks for the capital cities of two countries and then asks for the population of each.</p>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/hello_world_experiment.py">Hello World Experiment</a></em>:
+Same as <em>Hello World</em>, however it uses an <a href="../experiments/">experiment</a> to run the chain with two different models and different model parameters. Also prints out the output in different formats (CSV, JSON, Pandas DataFrame).</p>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/interesting_facts.py">Interesting Facts</a></em>:
+Demonstrates using <a href="../api/">methods to transform and modify prompts and to extract data from responses</a>. It will prompt for a list of facts about a topic, which are formatted in a particular way, and then it extracts the first fact and passes it along to the next prompt. The response styles are changed between the prompts, the response length is added to the prompt, and the list format to be used is also part of the prompt.</p>
+<p><em><a href="https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/math.py">Math</a></em>:
+An example based on the math example from MiniChain. It uses few-shot training prompt to include math questions and the code that solves them. The prompt asks for the Python code to solve the given math problem and then runs the code to produce the answer.</p>
+<h1 id="javascripttypescript">JavaScript/TypeScript</h1>
+<p><em>work in progress</em></p></div>
             </div>
         </div>
 

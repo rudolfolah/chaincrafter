@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Integrations - chaincrafter</title>
+        <title>API - chaincrafter</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -39,8 +39,8 @@
                             <li class="navitem">
                                 <a href="https://github.com/rudolfolah/chaincrafter" class="nav-link">GitHub</a>
                             </li>
-                            <li class="navitem active">
-                                <a href="./" class="nav-link">Integrations</a>
+                            <li class="navitem">
+                                <a href="../integrations/" class="nav-link">Integrations</a>
                             </li>
                             <li class="navitem">
                                 <a href="../experiments/" class="nav-link">Experiments</a>
@@ -51,19 +51,19 @@
                             <li class="navitem">
                                 <a href="../examples/" class="nav-link">Examples</a>
                             </li>
-                            <li class="navitem">
-                                <a href="../api/" class="nav-link">API</a>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">API</a>
                             </li>
                         </ul>
 
                     <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a rel="prev" href=".." class="nav-link">
+                                <a rel="prev" href="../examples/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../experiments/" class="nav-link">
+                                <a rel="next" class="nav-link disabled">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -84,33 +84,97 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#python" class="nav-link">Python</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#chaincrafterchains" class="nav-link">chaincrafter.chains</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#chaincrafterexperiments" class="nav-link">chaincrafter.experiments</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#chaincraftermodels" class="nav-link">chaincrafter.models</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#chaincrafterprompts" class="nav-link">chaincrafter.prompts</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#javascripttypescript" class="nav-link">JavaScript/TypeScript</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<p>Integrations available</p>
-<table>
-<thead>
-<tr>
-<th>Integration</th>
-<th>Status, Python</th>
-<th>Status, JavaScript</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OpenAI: GPT-3.5, GPT-4</td>
-<td>Stable</td>
-<td>In development</td>
-</tr>
-<tr>
-<td>Llama.cpp</td>
-<td>In development</td>
-<td>In development</td>
-</tr>
-</tbody>
-</table></div>
+<h1 id="python">Python</h1>
+<h2 id="chaincrafterchains"><code>chaincrafter.chains</code></h2>
+<ul>
+<li><code>Chain</code><ul>
+<li><code>run(chat_model: ChatModel, starting_input_vars: dict) -&gt; [Message]</code>: Runs the chain given a <code>ChatModel</code> and a set of starting input variables. </li>
+<li><code>async_run(chat_model: ChatModel, starting_input_vars: dict) -&gt; [Message]</code>: Runs the chain asynchronously using <code>asyncio</code>, see <a href="../async/">Async</a></li>
+</ul>
+</li>
+<li><code>Message</code>, a typed dictionary (based on the response from OpenAI API)</li>
+</ul>
+<h2 id="chaincrafterexperiments"><code>chaincrafter.experiments</code></h2>
+<ul>
+<li><code>Experiment</code><ul>
+<li><code>Experiment(chain: Chain, **model_params)</code></li>
+<li><code>set_chain_starting_input_vars(starting_input_vars: dict)</code></li>
+<li><code>prepare()</code></li>
+<li><code>run(runs: int = 1)</code></li>
+<li><code>to_csv()</code></li>
+<li><code>to_pandas_df()</code></li>
+<li><code>to_json()</code></li>
+<li><code>visualize()</code></li>
+</ul>
+</li>
+<li><code>OpenAiChatExperiment(Experiment)</code> </li>
+</ul>
+<h2 id="chaincraftermodels"><code>chaincrafter.models</code></h2>
+<ul>
+<li><code>ChatModel</code><ul>
+<li><code>ChatModel(temperature: float, model_name: str)</code></li>
+<li><code>complete(messages: [dict]) -&gt; str</code></li>
+<li><code>show_usage()</code></li>
+</ul>
+</li>
+<li><code>MockChat(ChatModel)</code><ul>
+<li><code>MockChat(temperature: float, model_name: str)</code></li>
+<li><code>mock_responses(messages: [dict])</code></li>
+<li><code>complete(messages: [dict])</code></li>
+</ul>
+</li>
+<li><code>OpenAiChat(ChatModel)</code><ul>
+<li><code>OpenAiChat(temperature: float, model_name: str, top_p: float, n: int, stream: bool, stop: [str], max_tokens: int, presence_penalty: float, frequency_penalty: float, logit_bias: dict)</code>: same API as <a href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI API</a></li>
+<li><code>complete(messages: [dict])</code></li>
+<li><code>show_usage()</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="chaincrafterprompts"><code>chaincrafter.prompts</code></h2>
+<ul>
+<li><code>Prompt</code><ul>
+<li><code>Prompt(fmt_str: str, prompt_modifiers: [Callable], **input_vars_transformers: [dict[str, Callable]])</code></li>
+<li><code>build(**input_vars: dict) -&gt; str</code></li>
+</ul>
+</li>
+<li><code>response_format_list(example_item_text: str) -&gt; Callable[[str], str]</code></li>
+<li><code>response_style(style_of: str) -&gt; str</code></li>
+<li><code>response_length(short_or_long: str = "short", answer_or_paragraph: str = "sentence") -&gt; str</code></li>
+<li><code>extract_items_from_list(response: str) -&gt; [str]</code></li>
+</ul>
+<h1 id="javascripttypescript">JavaScript/TypeScript</h1>
+<p><em>work in progress</em></p></div>
             </div>
         </div>
 
