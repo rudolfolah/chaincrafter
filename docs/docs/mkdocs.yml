@@ -1,5 +1,6 @@
 site_name: chaincrafter
 nav:
+  - Docs: index.md
   - GitHub: 'https://github.com/rudolfolah/chaincrafter'
   - integrations.md
   - experiments.md
