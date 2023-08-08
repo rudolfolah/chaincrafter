@@ -1,5 +1,6 @@
 import asyncio
 from collections import deque
+import logging
 from typing import TypedDict
 
 from chaincrafter.models import ChatModel
@@ -23,14 +24,20 @@ class Chain:
 
     def run(self, chat_model: ChatModel, starting_input_vars: dict = {}) -> [Message]:
         """
-        Runs the chain.
+        Runs the chain. The output of each prompt is passed to the next prompt as a starting input variable.
+
+        Ensure that the keys of the starting input variables and the output are unique or they will be overwritten.
+
         :param chat_model: The LLM chat model to use.
         :param starting_input_vars: The starting input variables that are passed to the first prompt
             (not the system prompt)
         :return: The messages that were sent back and forth between the user and the system.
         """
         queue = deque(self._prompts_and_output_keys)
+
         input_vars = {key: value for key, value in starting_input_vars.items()}
+        logging.debug(f"Starting input variables: {input_vars}")
+
         messages = [
             {"role": "system", "content": self._system_prompt.build(**input_vars)}
         ]
@@ -38,7 +45,11 @@ class Chain:
             human_prompt, output_key = queue.popleft()
             messages.append({"role": "user", "content": human_prompt.build(**input_vars)})
             response = chat_model.complete(messages)
-            input_vars = {output_key: response}
+
+            if output_key in input_vars:
+                logging.warning(f"Overwriting input variable {output_key}")
+
+            input_vars.update({output_key: response})
             messages.append({"role": "assistant", "content": response})
         return messages
 
