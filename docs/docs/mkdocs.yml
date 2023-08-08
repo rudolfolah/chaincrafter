@@ -5,6 +5,8 @@ nav:
   - integrations.md
   - experiments.md
   - async.md
+  - 'Examples': examples.md
+  - 'API': api.md
 plugins:
   - mermaid2
   - include-markdown
