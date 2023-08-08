@@ -1,9 +1,12 @@
 site_name: chaincrafter
 nav:
+  - Docs: index.md
   - GitHub: 'https://github.com/rudolfolah/chaincrafter'
   - integrations.md
   - experiments.md
   - async.md
+  - 'Examples': examples.md
+  - 'API': api.md
 plugins:
   - mermaid2
   - include-markdown
