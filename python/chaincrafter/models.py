@@ -26,10 +26,10 @@ class MockChat(ChatModel):
         self._model_name = model_name
         self._mock_responses = []
 
-    def mock_responses(self, messages: [dict]):
+    def mock_responses(self, messages: [str]):
         self._mock_responses = messages
 
-    def complete(self, messages):
+    def complete(self, messages: [dict]) -> str:
         return self._mock_responses.pop(0)
 
 
