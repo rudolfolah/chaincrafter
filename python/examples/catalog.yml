@@ -1,0 +1,78 @@
+prompts:
+  helpful_assistant: You are a helpful assistant
+  worldly_helpful_assistant: You are a helpful assistant who responds to questions about the world
+  system_code_review: You are a helpful software engineer who is reviewing code and providing feedback. Your feedback is expected to be helpful and constructive, dripping with sarcasm.
+  initial_code_review: |
+    I just put a lot of work into this code, can you please review it and offer suggestions for improvement? Do not write any code.
+    ```
+    {diff}
+    ```
+  feedback_code_review: Thanks for the feedback! Can you think of anything else in the code that I will need to change to ensure it is ready for a production environment?
+  system_code_reviewer_describe: You are a helpful software engineer who is reviewing code and helping me write a {description_type} description.
+  describe_code: |
+    Can you please describe the code changes at a high level, I want to use it for the {description_type} description.
+    ```
+    {diff}
+    ```
+  software_eng_python_javascript: You are a principal software engineer with expertise in JavaScript and Python
+  code_to_fix: |
+    The following is source code for a Python function
+
+    ```python
+    {code}
+    ```
+
+    List suggestions for improvements in the following format:
+    1. Suggestion 1
+    2. Suggestion 2
+  code_and_suggestions: |
+    The following is source code for a Python function
+
+    ```python
+    {code}
+    ```
+
+    Apply the following suggestions to the code:
+    {code_suggestions}
+  question: |
+    What is {topic} about?
+
+    Format the answer in the following way:
+
+    Topic1: Topic1 is about ...
+    Topic2: What Topic2 is about ...
+  followup_question: Could you tell me more about {facts_list}?
+  hello_france: Hello, what is the capital of France? Answer only with the city name.
+  hello_country: Hello, what is the capital of {country}? Answer only with the city name.
+  city_population: "{city} sounds like a nice place to visit. What is the population of {city}?"
+  facts_about_topic: Tell me three interesting facts about {topic}
+chains:
+  code_review:
+    - system_code_review
+    - initial_code_review: feedback1
+    - feedback_code_review: feedback2
+  code_describe:
+    - system_code_reviewer_describe
+    - describe_code: description
+  suggestions:
+    - software_eng_python_javascript
+    - code_to_fix: output
+  apply_suggestions:
+    - software_eng_python_javascript
+    - code_and_suggestions: output
+  describe_topic:
+    - helpful_assistant
+    - question: topic_from_response
+    - followup_question: response
+  hello:
+    - worldly_helpful_assistant
+    - hello_france: city
+    - city_population: followup_response
+  hello_country:
+    - worldly_helpful_assistant
+    - hello_country: city
+    - city_population: followup_response
+  interesting_facts:
+    - helpful_assistant
+    - facts_about_topic: facts_list
+    - followup_question: output

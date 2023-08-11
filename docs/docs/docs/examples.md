@@ -19,10 +19,16 @@ Same as *Hello World*, however it uses [the async API](./async.md) to run two ch
 *[Hello World Experiment](https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/hello_world_experiment.py)*:
 Same as *Hello World*, however it uses an [experiment](./experiments.md) to run the chain with two different models and different model parameters. Also prints out the output in different formats (CSV, JSON, Pandas DataFrame).
 
+*[Hello World Catalog](https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/hello_world_catalog.py)*:
+Same as *Hello World*, however it loads the prompts and chain from a catalog to run the chain.
+
 *[Interesting Facts](https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/interesting_facts.py)*:
 Demonstrates using [methods to transform and modify prompts and to extract data from responses](./api.md). It will prompt for a list of facts about a topic, which are formatted in a particular way, and then it extracts the first fact and passes it along to the next prompt. The response styles are changed between the prompts, the response length is added to the prompt, and the list format to be used is also part of the prompt.
 
-*[Math](https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/math.py)*:
+*[Interesting Facts Catalog](https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/interesting_facts_catalog.py)*:
+Same as *Interesting Facts*, loads the prompts from a catalog and adds a few prompt modifiers.
+
+*[Math](https://github.com/rudolfolah/chaincrafter/blob/main/python/examples/math_example.py)*:
 An example based on the math example from MiniChain. It uses few-shot training prompt to include math questions and the code that solves them. The prompt asks for the Python code to solve the given math problem and then runs the code to produce the answer.
 
 # JavaScript/TypeScript
