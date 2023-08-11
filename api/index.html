@@ -87,6 +87,10 @@
             
             <li class="nav-item" data-level="1"><a href="#python" class="nav-link">Python</a>
               <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#chaincraftercatalogs" class="nav-link">chaincrafter.catalogs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             <li class="nav-item" data-level="2"><a href="#chaincrafterchains" class="nav-link">chaincrafter.chains</a>
               <ul class="nav flex-column">
               </ul>
@@ -110,12 +114,28 @@
               <ul class="nav flex-column">
               </ul>
             </li>
+            
+            <li class="nav-item" data-level="1"><a href="#catalog-format-yaml" class="nav-link">Catalog Format YAML</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
 <h1 id="python">Python</h1>
+<h2 id="chaincraftercatalogs"><code>chaincrafter.catalogs</code></h2>
+<p>A catalog is a collection of chains and prompts stored in a YAML file.</p>
+<ul>
+<li><code>Catalog</code><ul>
+<li><code>load(path: str)</code></li>
+<li><code>get_chain(chain_id: str) -&gt; Chain</code></li>
+<li><code>get_prompt(prompt_id: str, prompt_modifiers: [Callable] = [], **input_vars_transformers: [dict[str, Callable]]) -&gt; Prompt</code></li>
+<li><code>__getitem__(prompt_id: str) -&gt; Prompt</code></li>
+</ul>
+</li>
+</ul>
 <h2 id="chaincrafterchains"><code>chaincrafter.chains</code></h2>
 <ul>
 <li><code>Chain</code><ul>
@@ -174,7 +194,23 @@
 <li><code>extract_items_from_list(response: str) -&gt; [str]</code></li>
 </ul>
 <h1 id="javascripttypescript">JavaScript/TypeScript</h1>
-<p><em>work in progress</em></p></div>
+<p><em>work in progress</em></p>
+<h1 id="catalog-format-yaml">Catalog Format YAML</h1>
+<p>YAML file format for Catalogs:</p>
+<pre><code class="language-yaml">prompts:
+  helpful_assistant: You are a helpful assistant
+  initial_code_review: |
+    I just put a lot of work into this code, can you please review it and offer suggestions for improvement? Do not write any code.
+    ```
+    {diff}
+    ```
+  city_population: &quot;{city} sounds like a nice place to visit. What is the population of {city}?&quot;
+chains:
+  example:
+    - helpful_assistant:
+    - initial_code_review: city
+    - city_population: output
+</code></pre></div>
             </div>
         </div>
 
