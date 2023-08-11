@@ -27,10 +27,10 @@ python -m build
 
 pip install twine
 # test upload
-twine upload -r testpypi dist/*
+twine upload -r testpypi dist/chaincrafter-0.2.1*
 
 # upload
-twine upload dist/*
+twine upload dist/chaincrafter-0.2.1*
 ```
 
 ### Testing in another package
