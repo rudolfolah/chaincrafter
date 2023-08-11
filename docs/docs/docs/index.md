@@ -11,5 +11,8 @@ Seamless integration and composability for large language model apps.
 * [Integration with OpenAI API (llama.cpp in progress)](./integrations.md)
 * [Async calls to models](./async.md)
 * [Run experiments to compare model parameters and performance over time](./experiments.md)
+* [Load Prompts and Chains from YAML using Catalogs](./api/#catalog-format-yaml)
+    * Makes it easier to share prompts and chains between projects
+    * Build up a prompts library
 
 {% include-markdown '../../../README.md' start='<!--docs-index-start-->' end='<!--docs-index-end-->' %}
