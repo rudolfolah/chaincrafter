@@ -5,17 +5,21 @@ gpt4_chat = OpenAiChat(temperature=0.7, model_name="gpt-4")
 system_prompt = Prompt("You are a helpful assistant")
 example_prompt = Prompt(
     "Tell me three interesting facts about {topic}",
-    # Commonly used instructions or prompts can be added as modifiers and re-used
-    response_style("professional economist"),
-    response_length("long", "answer"),
-    response_format_list("Interesting fact"),
+    [
+        # Commonly used instructions or prompts can be added as modifiers and re-used
+        response_style("professional economist"),
+        response_length("long", "answer"),
+        response_format_list("Interesting fact"),
+    ],
     # The input variables that the prompt expects, and their types (or processing function)
     topic=str
 )
 followup_question_prompt = Prompt(
     "Could you tell me more about {facts_list}?",
-    response_style("a pirate who has just returned from the Galapagos Islands"),
-    response_length("short", "2-3 paragraphs"),
+    [
+        response_style("a pirate who has just returned from the Galapagos Islands"),
+        response_length("short", "2-3 paragraphs"),
+    ],
     # Parses and extracts data from the previous response to populate the input variable that is used by the prompt
     facts_list=lambda facts_list: extract_items_from_list(facts_list)[0],
 )
