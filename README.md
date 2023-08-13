@@ -12,6 +12,9 @@ Seamless integration and composability for large language model apps.
     * Add custom functions to process the input variables
 * Integration with OpenAI API (llama.cpp in progress)
 * Async calls to models
+* Load Prompts and Chains from YAML using Catalogs
+    * Makes it easier to share prompts and chains between projects
+    * Build up a prompts library
 
 <!--docs-index-start-->
 # Python
@@ -55,6 +58,7 @@ for message in messages:
 source venv/bin/activate
 export OPENAI_API_KEY="..."
 python -m examples.interesting_facts
+python -m examples.interesting_facts_catalog
 ```
 
 # JavaScript / TypeScript
