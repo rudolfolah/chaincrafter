@@ -143,12 +143,13 @@ class OpenAiChat(ChatModel):
             kwargs["max_tokens"] = self._max_tokens
         if self._logit_bias:
             kwargs["logit_bias"] = self._logit_bias
-        completion = openai.ChatCompletion.create(**kwargs)
+        completion_response = openai.ChatCompletion.create(**kwargs)
         logging.debug("OpenAI API call complete")
-        self.usage["prompt_tokens"] += completion.usage["prompt_tokens"]
-        self.usage["completion_tokens"] += completion.usage["completion_tokens"]
-        self.usage["total_tokens"] += completion.usage["total_tokens"]
-        return completion.choices[0].message["content"]
+        self.usage["prompt_tokens"] += completion_response.usage["prompt_tokens"]
+        self.usage["completion_tokens"] += completion_response.usage["completion_tokens"]
+        self.usage["total_tokens"] += completion_response.usage["total_tokens"]
+        content = completion_response.choices[0].message["content"]
+        return content, completion_response
 
     def show_usage(self):
         print(f"Prompt tokens: {self.usage['prompt_tokens']}")
