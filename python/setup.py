@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="chaincrafter",
-    version="0.2.2",
+    version="0.2.3",
     description="Seamless integration and composability for large language model apps.",
     long_description="Seamless integration and composability for large language model apps.",
     author="Rudolf Olah",
     author_email="rudolf.olah.to@gmail.com",
     url="https://github.com/rudolfolah/chaincrafter",
     packages=find_packages(),
-    requires=[
+    install_requires=[
         "pandas(==2.0.3)",
         "pyyaml(==6.0.1)",
     ],
