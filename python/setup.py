@@ -9,6 +9,11 @@ setup(
     author_email="rudolf.olah.to@gmail.com",
     url="https://github.com/rudolfolah/chaincrafter",
     packages=find_packages(),
+    requires=[
+        "pandas==2.0.3",
+        "pyyaml==6.0.1",
+    ],
+    provides=["chaincrafter"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
