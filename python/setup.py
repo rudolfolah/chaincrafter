@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="chaincrafter",
-    version="0.2.3",
+    version="0.2.4",
     description="Seamless integration and composability for large language model apps.",
     long_description="Seamless integration and composability for large language model apps.",
     author="Rudolf Olah",
