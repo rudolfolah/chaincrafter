@@ -50,6 +50,16 @@ for message in messages:
     print(f"{message['role']}: {message['content']}")
 ```
 
+### Using a Local LLM server
+If you're using a local LLM such as LM Studio, you will need to set the base url environment variable:
+
+```
+export OPENAI_API_KEY='openai-api-key'
+export OPENAI_BASE_URL='http://localhost:1234/v1'
+```
+
+Model names will also need to be updated to reflect the models that are available in your local LLM server.
+
 ### Running the examples
 ```bash
 source venv/bin/activate
