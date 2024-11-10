@@ -1,11 +1,11 @@
-from typing import Callable
+from typing import Callable, List
 
 
 class Prompt:
     """
     A chat message prompt that is formatted with input variables and modified by prompt modifiers.
     """
-    def __init__(self, fmt_str: str, prompt_modifiers: [Callable] = [], **input_vars_transformers: [dict[str, Callable]]):
+    def __init__(self, fmt_str: str, prompt_modifiers: List[Callable] = [], **input_vars_transformers: List[dict[str, Callable]]):
         """
         A prompt is a string that is formatted with input variables and modified by prompt modifiers.
 
@@ -74,5 +74,5 @@ def response_length(short_or_long: str = "short", answer_or_paragraph: str = "se
 
 
 # Response Extraction Functions
-def extract_items_from_list(response: str) -> [str]:
+def extract_items_from_list(response: str) -> List[str]:
     return [item.split(":")[1].strip() for item in response.split("\n") if item.strip()]
