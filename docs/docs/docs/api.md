@@ -43,7 +43,8 @@ A catalog is a collection of chains and prompts stored in a YAML file.
 
 ## `chaincrafter.prompts`
 - `Prompt`
-    - `Prompt(fmt_str: str, prompt_modifiers: [Callable], **input_vars_transformers: [dict[str, Callable]])`
+    - `Prompt(fmt_str: str, prompt_modifiers: [Callable] = [], *, format_template: bool = True, **input_vars_transformers: [dict[str, Callable]])`
+        - Set `format_template=False` for literal or already-formatted text. Braces are preserved; input variables and their transformers are ignored. Prompt modifiers still run in order.
     - `build(**input_vars: dict) -> str`
 - `response_format_list(example_item_text: str) -> Callable[[str], str]`
 - `response_style(style_of: str) -> str`

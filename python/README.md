@@ -32,7 +32,7 @@ pip install 'chaincrafter[openai]'
 
 1. Define your prompts and the variables that they expect
   - The input variables can be of any type, and can be processed by a function
-  - The prompt message is treated as an _f-string_
+  - The prompt message uses Python's `str.format` syntax by default
 2. Define your chain of prompts
   - The chain is a list of tuples, where each tuple contains a prompt and the output key to store the response in
   - The output key is used to access the response in the next prompt
@@ -56,6 +56,32 @@ messages = chain.run(chat_model)
 for message in messages:
     print(f"{message['role']}: {message['content']}")
 ```
+
+### Literal prompts and code
+
+For code, JSON, or text you have already formatted, disable template formatting:
+
+```python
+prompt = Prompt(
+    'Review this JavaScript: function greet() { return {message: "hello"}; }',
+    format_template=False,
+)
+```
+
+The text, including all braces, is preserved verbatim before prompt modifiers
+are applied. Input variables and their transformers are ignored in this mode.
+Literal prompts work as system or user prompts in both synchronous and
+asynchronous chains.
+
+When you need template variables alongside code, pass the code as a value:
+
+```python
+prompt = Prompt("Review this {language} code:\n{code}")
+message = prompt.build(language="JavaScript", code='function greet() { return "hello"; }')
+```
+
+Braces inside input values are not formatted again. In template text itself,
+escape literal braces as `{{` and `}}`. YAML catalog prompts remain templates.
 
 ### Running the examples
 ```bash
