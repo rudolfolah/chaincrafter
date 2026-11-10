@@ -82,4 +82,4 @@ def response_length(short_or_long: str = "short", answer_or_paragraph: str = "se
 
 # Response Extraction Functions
 def extract_items_from_list(response: str) -> [str]:
-    return [item.split(":")[1].strip() for item in response.split("\n") if item.strip()]
+    return [item.split(":", 1)[1].strip() for item in response.split("\n") if item.strip()]

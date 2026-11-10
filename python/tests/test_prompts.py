@@ -1,6 +1,6 @@
 import unittest
 
-from chaincrafter import Prompt
+from chaincrafter import Prompt, extract_items_from_list
 
 
 class TestPrompt(unittest.TestCase):
@@ -41,3 +41,12 @@ class TestPrompt(unittest.TestCase):
             with self.subTest(text=text):
                 with self.assertRaises(error):
                     Prompt(text).build()
+
+
+class TestListExtraction(unittest.TestCase):
+    def test_preserves_colons_inside_items_and_skips_blank_lines(self):
+        response = "\n1: Time: 12:30\n \n2: https://example.com:8080/path \n"
+        self.assertEqual(
+            extract_items_from_list(response),
+            ["Time: 12:30", "https://example.com:8080/path"],
+        )
