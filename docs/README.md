@@ -2,10 +2,15 @@
 
 ## Install
 
+Use Python 3.15.2 for the latest documentation dependencies (Python 3.9+ is
+required for the documentation toolchain, independently of the library's
+Python 3.8+ support).
+
+
 ```bash
-python -m venv ./venv
+python3.15 -m venv ./venv
 source ./venv/bin/activate
-pip install -r requirements.txt
+python -m pip install --upgrade -r requirements.txt
 ```
 
 ## Build and Serve Locally

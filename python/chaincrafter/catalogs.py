@@ -1,6 +1,6 @@
 import logging
 from string import Formatter
-from typing import Callable
+from typing import Callable, Dict
 
 from chaincrafter.chains import Chain
 from chaincrafter.prompts import Prompt
@@ -78,7 +78,7 @@ class Catalog:
     def get_chain(self, chain_id: str) -> Chain:
         return self.chains[chain_id]
 
-    def get_prompt(self, prompt_id: str, prompt_modifiers: [Callable] = [], **input_vars_transformers: [dict[str, Callable]]) -> Prompt:
+    def get_prompt(self, prompt_id: str, prompt_modifiers: [Callable] = [], **input_vars_transformers: [Dict[str, Callable]]) -> Prompt:
         """
         Gets a prompt from the catalog. If prompt_modifiers or input_vars_transformers are specified, a new prompt is
         created from the existing prompt format string.

@@ -20,8 +20,15 @@ Seamless integration and composability for large language model apps.
 # Python
 
 ## Installation
+
+Supports Python 3.8–3.15. Development uses Python 3.15.2. Older interpreters
+automatically receive compatible dependency releases; Python 3.8–3.10 are
+end-of-life upstream, so prefer a current Python release for security updates.
+
 ```bash
 pip install chaincrafter
+# Include the optional SDK for the OpenAI examples below.
+pip install 'chaincrafter[openai]'
 ```
 
 ## Usage

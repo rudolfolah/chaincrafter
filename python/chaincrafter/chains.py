@@ -1,5 +1,6 @@
 import asyncio
 from collections import deque
+from contextvars import copy_context
 import logging
 from typing import TypedDict
 
@@ -54,4 +55,6 @@ class Chain:
         return messages
 
     async def async_run(self, chat_model: ChatModel, starting_input_vars: dict = {}) -> [Message]:
-        return await asyncio.to_thread(self.run, chat_model, starting_input_vars)
+        loop = asyncio.get_running_loop()
+        context = copy_context()
+        return await loop.run_in_executor(None, context.run, self.run, chat_model, starting_input_vars)

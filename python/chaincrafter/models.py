@@ -96,11 +96,12 @@ class OpenAiChat(ChatModel):
             logit_bias: dict = None,
     ):
         super().__init__(temperature, model_name)
-        import openai
-        openai.api_key = os.getenv("OPENAI_API_KEY")
-        if openai.api_key is None:
+        from openai import OpenAI
+        api_key = os.getenv("OPENAI_API_KEY")
+        if api_key is None:
             logging.error("OPENAI_API_KEY environment variable is not set")
             sys.exit(1)
+        self._client = OpenAI(api_key=api_key)
         self._temperature = temperature
         self._model_name = model_name
         self._top_p = top_p
@@ -125,7 +126,6 @@ class OpenAiChat(ChatModel):
         :param messages: A list of messages to send to the chat model
         :return:
         """
-        import openai
         logging.debug("Calling OpenAI API")
         kwargs = {
             "model": self._model_name,
@@ -143,12 +143,12 @@ class OpenAiChat(ChatModel):
             kwargs["max_tokens"] = self._max_tokens
         if self._logit_bias:
             kwargs["logit_bias"] = self._logit_bias
-        completion = openai.ChatCompletion.create(**kwargs)
+        completion = self._client.chat.completions.create(**kwargs)
         logging.debug("OpenAI API call complete")
-        self.usage["prompt_tokens"] += completion.usage["prompt_tokens"]
-        self.usage["completion_tokens"] += completion.usage["completion_tokens"]
-        self.usage["total_tokens"] += completion.usage["total_tokens"]
-        return completion.choices[0].message["content"]
+        self.usage["prompt_tokens"] += completion.usage.prompt_tokens
+        self.usage["completion_tokens"] += completion.usage.completion_tokens
+        self.usage["total_tokens"] += completion.usage.total_tokens
+        return completion.choices[0].message.content
 
     def show_usage(self):
         print(f"Prompt tokens: {self.usage['prompt_tokens']}")
