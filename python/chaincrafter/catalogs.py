@@ -1,24 +1,9 @@
 import logging
-from string import Formatter
 from typing import Callable, Dict
 
 from chaincrafter.chains import Chain
 from chaincrafter.prompts import Prompt
 import yaml
-
-
-def _get_input_vars_transformers(fmt_str, formatter):
-    """
-    Returns a dictionary of input variable names and their transformers from a prompt format string.
-    :param fmt_str:
-    :param formatter:
-    :return:
-    """
-    return {
-        var_name: str
-        for _, var_name, _, _ in formatter.parse(fmt_str)
-        if var_name is not None
-    }
 
 
 class Catalog:
@@ -29,7 +14,6 @@ class Catalog:
         self.chains = {}
         self.prompts = {}
         self._prompt_fmt_strs = {}
-        self._prompt_input_vars_transformers = {}
 
     def load(self, path: str):
         """
@@ -64,16 +48,13 @@ class Catalog:
             )
 
     def _load_prompts(self, catalog: dict):
-        if "chains" not in catalog:
+        if "prompts" not in catalog:
             logging.error("No prompts found in catalog.")
             return
         logging.info(f"Loading {len(catalog['prompts'])} prompts...")
-        formatter = Formatter()
         for name, fmt_str in catalog["prompts"].items():
-            input_vars_transformers = _get_input_vars_transformers(fmt_str, formatter)
-            self.prompts[name] = Prompt(fmt_str, **input_vars_transformers)
+            self.prompts[name] = Prompt(fmt_str)
             self._prompt_fmt_strs[name] = fmt_str
-            self._prompt_input_vars_transformers[name] = input_vars_transformers
 
     def get_chain(self, chain_id: str) -> Chain:
         return self.chains[chain_id]
@@ -89,12 +70,10 @@ class Catalog:
         :return:
         """
         if len(prompt_modifiers) > 0 or len(input_vars_transformers) > 0:
-            override_input_vars_transformers = self._prompt_input_vars_transformers[prompt_id].copy()
-            override_input_vars_transformers.update(input_vars_transformers)
             return Prompt(
                 self._prompt_fmt_strs[prompt_id],
                 prompt_modifiers,
-                **override_input_vars_transformers
+                **input_vars_transformers
             )
         return self.prompts[prompt_id]
 
