@@ -10,3 +10,12 @@ Install the OpenAI integration with `pip install 'chaincrafter[openai]'` and set
 Installation selects OpenAI SDK 2.2.x on Python 3.8, 2.48.0+ on Python 3.9,
 or 3.48.0+ on Python 3.10 and newer. Later SDK releases require dependencies
 that no longer support Python 3.8.
+
+With `stream=True`, `OpenAiChat.complete()` consumes the stream and returns the
+complete first-choice text, so it works with `Chain.run()` and `Chain.async_run()`.
+Reported streaming token usage is added to the model's cumulative totals; if the
+server omits usage, those totals remain unchanged.
+
+The experimental `LlamaCppChat` uses `LLAMA_CPP_PATH` as the executable path and
+the supplied `model_name` as the model file path. The integration remains in
+development.
