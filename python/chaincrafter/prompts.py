@@ -5,12 +5,15 @@ class Prompt:
     """
     A chat message prompt that is formatted with input variables and modified by prompt modifiers.
     """
-    def __init__(self, fmt_str: str, prompt_modifiers: [Callable] = [], **input_vars_transformers: [Dict[str, Callable]]):
+    def __init__(self, fmt_str: str, prompt_modifiers: [Callable] = [], *,
+                 format_template: bool = True, **input_vars_transformers: [Dict[str, Callable]]):
         """
         A prompt is a string that is formatted with input variables and modified by prompt modifiers.
 
         :param fmt_str: The prompt string, with format variables in the form of {var_name}
         :param prompt_modifiers: Functions that modify the prompt string
+        :param format_template: If False, treat fmt_str as literal text, skipping input variable
+          transformers and string formatting. Prompt modifiers still apply.
         :param input_vars_transformers: The input variables and the functions that transform them
           such as `str` or `int` or `lambda x: x.lower()`.
 
@@ -25,10 +28,12 @@ class Prompt:
         self._fmt_str = fmt_str
         self._prompt_modifiers = prompt_modifiers
         self._input_vars_transformers = input_vars_transformers
+        self._format_template = format_template
 
     def build(self, **input_vars):
         """
         Applies the input variable transformers to the input variables, then formats the prompt string.
+        When formatting is disabled, only prompt modifiers are applied.
 
         :param input_vars: key-value pairs of input variables
         :return: the formatted prompt string
@@ -42,9 +47,11 @@ class Prompt:
         >>> prompt.build(name="john")
         'Hello John! How are you?'
         """
-        for input_var, transformer in self._input_vars_transformers.items():
-            input_vars[input_var] = transformer(input_vars[input_var])
-        formatted = self._fmt_str.format(**input_vars)
+        formatted = self._fmt_str
+        if self._format_template:
+            for input_var, transformer in self._input_vars_transformers.items():
+                input_vars[input_var] = transformer(input_vars[input_var])
+            formatted = formatted.format(**input_vars)
         for prompt_modifier in self._prompt_modifiers:
             formatted = prompt_modifier(formatted)
         return formatted
