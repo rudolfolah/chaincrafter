@@ -59,7 +59,41 @@ configuration. The key is a nonsecret SDK requirement; local Ollama ignores it.
 Model downloads require network access, but these completions run locally.
 
 Both modes execute a two-step chain, passing the first answer into the second
-prompt, and print cumulative token usage. Streaming is consumed internally;
-`Chain.run()` still returns complete messages, not live token output.
+prompt. INFO logs go to stdout; warnings, errors, and failure tracebacks go to
+stderr. Each run creates a unique directory (printed at startup) containing:
+
+* `stdout.log` and `stderr.log`: copies of the example's console logs.
+* `result.json`: collected model responses, complete messages on success,
+  per-request elapsed seconds and token usage, cumulative usage, chain elapsed
+  seconds, total elapsed seconds, and success/error status. Failed requests retain
+  their timing and error. Timing uses a monotonic performance counter.
+
+Choose an artifact parent with `--log-dir /tmp/chaincrafter-runs`; otherwise the
+system temporary directory is used. Logs contain prompts and responses; treat
+them as potentially sensitive. Temporary directories may be cleared by the OS.
+Request times include HTTP and inference time; the first request may also include
+model loading. These are client wall-clock timings, not Ollama inference-only
+metrics. Total time includes client setup and managed-server startup/shutdown,
+but not Python interpreter startup. Streaming is consumed internally;
+`Chain.run()` returns complete messages, not live token output.
+
+To collect Ollama's process output too, let the example start its own server on
+an unused port. The model must already be downloaded:
+
+```bash
+PYTHONPATH=. uv run --no-project --python 3.11 --with pyyaml --with openai \
+  python examples/hello_world_ollama.py --stream --start-server --port 11435 \
+  --log-dir /tmp/chaincrafter-runs
+```
+
+This adds `ollama.stdout.log`, `ollama.stderr.log`, and server-start elapsed
+seconds. The server is localhost-only with cloud disabled and is stopped when
+the example exits, including on errors. Occupied ports are rejected rather than
+silently reusing a server. Without `--start-server`, model replies are collected
+but an existing server's stdout/stderr cannot be retrieved through the API.
+Failures produce an error report and a nonzero exit code.
+
 Verified locally with Ollama 0.40.15: answers `4` and `7` in both modes.
+The timed example was also checked with a managed server on port 11435, including
+captured server logs, shutdown, and an occupied-port failure.
 Keep `n=1` and omit `logit_bias`; Ollama does not support those OpenAI options.
