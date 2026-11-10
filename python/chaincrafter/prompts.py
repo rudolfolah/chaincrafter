@@ -1,11 +1,11 @@
-from typing import Callable
+from typing import Callable, Dict
 
 
 class Prompt:
     """
     A chat message prompt that is formatted with input variables and modified by prompt modifiers.
     """
-    def __init__(self, fmt_str: str, prompt_modifiers: [Callable] = [], **input_vars_transformers: [dict[str, Callable]]):
+    def __init__(self, fmt_str: str, prompt_modifiers: [Callable] = [], **input_vars_transformers: [Dict[str, Callable]]):
         """
         A prompt is a string that is formatted with input variables and modified by prompt modifiers.
 
