@@ -49,7 +49,7 @@ settings so requests stay local.
 python -m pip install --upgrade build
 python -m build
 # Install the wheel in another project's environment.
-python -m pip install /path/to/chaincrafter/python/dist/chaincrafter-0.2.3-py3-none-any.whl
+python -m pip install /path/to/chaincrafter/python/dist/chaincrafter-0.2.4-py3-none-any.whl
 ```
 
 Model-specific imports should remain inside `__init__` or `complete` so optional
