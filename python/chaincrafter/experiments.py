@@ -19,7 +19,8 @@ class Experiment:
     def __init__(self, chain: Chain, **model_params):
         self.chain = chain
         self.model_params = model_params
-        self._model_params_product = None
+        self._model_param_names = ()
+        self._model_param_pools = ()
         self._prepared = False
         self.results = []
         self.starting_input_vars = {}
@@ -42,9 +43,10 @@ class Experiment:
 
     def prepare(self) -> None:
         """
-        Prepares the experiment by generating all permutations of the model parameters.
+        Prepares the experiment by snapshotting the model parameter names and value pools.
         """
-        self._model_params_product = product(*self.model_params.values())
+        self._model_param_names = tuple(self.model_params)
+        self._model_param_pools = tuple(tuple(values) for values in self.model_params.values())
         self._prepared = True
 
     def run(self, runs: int = 1) -> None:
@@ -55,8 +57,8 @@ class Experiment:
         if not self._prepared:
             self.prepare()
         for run_number in range(runs):
-            for model_params_values in self._model_params_product:
-                model_params = dict(zip(self.model_params.keys(), model_params_values))
+            for model_params_values in product(*self._model_param_pools):
+                model_params = dict(zip(self._model_param_names, model_params_values))
                 model = self.model_class(**model_params)
                 messages = self.chain.run(model, self.starting_input_vars)
                 result = {

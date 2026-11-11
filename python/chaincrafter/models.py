@@ -57,10 +57,6 @@ class LlamaCppChat(ChatModel):
         self._temperature = temperature
         self._model_name = model_name
 
-        # for testing
-        self._bin_path = '/Users/rudolfo/Workspace/llama.cpp/main'
-        self._model_name = '/Users/rudolfo/Library/Application Support/nomic.ai/GPT4All/nous-hermes-13b.ggmlv3.q4_0.bin'
-
     def complete(self, messages):
         _process: subprocess.Popen = subprocess.Popen(
             [self._bin_path, '--model', self._model_name, '--interactive-first', '--temp', str(self._temperature), '-ngl', '1'],
@@ -143,12 +139,29 @@ class OpenAiChat(ChatModel):
             kwargs["max_tokens"] = self._max_tokens
         if self._logit_bias:
             kwargs["logit_bias"] = self._logit_bias
+        if self._stream:
+            kwargs["stream_options"] = {"include_usage": True}
         completion = self._client.chat.completions.create(**kwargs)
         logging.debug("OpenAI API call complete")
-        self.usage["prompt_tokens"] += completion.usage.prompt_tokens
-        self.usage["completion_tokens"] += completion.usage.completion_tokens
-        self.usage["total_tokens"] += completion.usage.total_tokens
-        return completion.choices[0].message.content
+        if self._stream:
+            parts = []
+            usage = None
+            with completion as chunks:
+                for chunk in chunks:
+                    if chunk.usage is not None:
+                        usage = chunk.usage
+                    for choice in chunk.choices:
+                        if choice.index == 0 and choice.delta.content is not None:
+                            parts.append(choice.delta.content)
+            content = "".join(parts)
+        else:
+            usage = completion.usage
+            content = completion.choices[0].message.content
+        if usage is not None:
+            self.usage["prompt_tokens"] += usage.prompt_tokens
+            self.usage["completion_tokens"] += usage.completion_tokens
+            self.usage["total_tokens"] += usage.total_tokens
+        return content
 
     def show_usage(self):
         print(f"Prompt tokens: {self.usage['prompt_tokens']}")

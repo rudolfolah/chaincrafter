@@ -50,6 +50,7 @@ A catalog is a collection of chains and prompts stored in a YAML file.
 - `response_style(style_of: str) -> str`
 - `response_length(short_or_long: str = "short", answer_or_paragraph: str = "sentence") -> str`
 - `extract_items_from_list(response: str) -> [str]`
+    - Extracts text after the first colon on each nonblank line, preserving embedded colons such as times and URLs.
 
 # JavaScript/TypeScript
 

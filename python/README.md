@@ -83,6 +83,15 @@ message = prompt.build(language="JavaScript", code='function greet() { return "h
 Braces inside input values are not formatted again. In template text itself,
 escape literal braces as `{{` and `}}`. YAML catalog prompts remain templates.
 
+### Catalog templates
+
+Catalog YAML may contain only `prompts`; `chains` is optional. Loaded prompts
+use the same `str.format` behavior as direct `Prompt` instances, preserving input
+types for numeric formats (`{value:.2f}`), indexed fields (`{user[name]}`), and
+attribute fields (`{user.name}`). Values are not automatically converted to strings.
+Use explicit transformers when conversion is needed, for example
+`catalog.get_prompt("price", value=float).build(value="3.50")`.
+
 ### Running the examples
 ```bash
 source venv/bin/activate
