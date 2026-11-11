@@ -16,8 +16,8 @@ python -m build
 python -m twine check dist/*
 
 # Test upload (use the artifacts for the version being released).
-python -m twine upload -r testpypi dist/chaincrafter-0.2.3*
+python -m twine upload -r testpypi dist/chaincrafter-0.2.4*
 
 # Upload.
-python -m twine upload dist/chaincrafter-0.2.3*
+python -m twine upload dist/chaincrafter-0.2.4*
 ```
